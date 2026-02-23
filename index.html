@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1a1a2e">
+    <title>💪 Dumbbell Beast Mode</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Splash Screen -->
+        <div id="splash" class="splash-screen">
+            <div class="splash-content">
+                <div class="logo-animation">🏋️</div>
+                <h1>DUMBBELL ONLY</h1>
+                <p>Home Workout Beast</p>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="nav-bar">
+            <button class="nav-btn active" onclick="showPage('schedule')">📅 Jadwal</button>
+            <button class="nav-btn" onclick="showPage('today')">🔥 Hari Ini</button>
+            <button class="nav-btn" onclick="showPage('progress')">📊 Progress</button>
+            <button class="nav-btn" onclick="showPage('profile')">👤 Profil</button>
+        </nav>
+
+        <!-- Schedule Page -->
+        <div id="schedule-page" class="page active">
+            <header class="page-header">
+                <h1>Jadwal Latihan</h1>
+                <p class="subtitle">Dumbbell Only • Home Workout</p>
+                <p class="quote" id="daily-quote">"Sweat is just fat crying"</p>
+            </header>
+            
+            <div class="week-container">
+                <div class="day-card" data-day="Senin" onclick="showDayDetail('Senin')">
+                    <div class="day-icon">🦵</div>
+                    <div class="day-info">
+                        <h3>Senin</h3>
+                        <span>Leg Day + Core</span>
+                        <small>Quads, Hamstrings, Glutes, Calves</small>
+                    </div>
+                    <div class="day-status" id="status-Senin">⭕</div>
+                </div>
+
+                <div class="day-card" data-day="Selasa" onclick="showDayDetail('Selasa')">
+                    <div class="day-icon">🔙</div>
+                    <div class="day-info">
+                        <h3>Selasa</h3>
+                        <span>Back & Biceps</span>
+                        <small>Lat, Rhomboids, Rear Delt, Biceps</small>
+                    </div>
+                    <div class="day-status" id="status-Selasa">⭕</div>
+                </div>
+
+                <div class="day-card" data-day="Rabu" onclick="showDayDetail('Rabu')">
+                    <div class="day-icon">🎯</div>
+                    <div class="day-info">
+                        <h3>Rabu</h3>
+                        <span>Chest & Triceps</span>
+                        <small>Pec Major, Front Delt, Triceps</small>
+                    </div>
+                    <div class="day-status" id="status-Rabu">⭕</div>
+                </div>
+
+                <div class="day-card" data-day="Kamis" onclick="showDayDetail('Kamis')">
+                    <div class="day-icon">🎲</div>
+                    <div class="day-info">
+                        <h3>Kamis</h3>
+                        <span>Shoulders & Forearms</span>
+                        <small>Side Delt, Traps, Grip Strength</small>
+                    </div>
+                    <div class="day-status" id="status-Kamis">⭕</div>
+                </div>
+
+                <div class="day-card" data-day="Jumat" onclick="showDayDetail('Jumat')">
+                    <div class="day-icon">⚡</div>
+                    <div class="day-info">
+                        <h3>Jumat</h3>
+                        <span>Full Body HIIT</span>
+                        <small>Conditioning, Fat Burn, Core</small>
+                    </div>
+                    <div class="day-status" id="status-Jumat">⭕</div>
+                </div>
+
+                <div class="day-card rest-day">
+                    <div class="day-icon">🧘</div>
+                    <div class="day-info">
+                        <h3>Sabtu</h3>
+                        <span>Active Recovery</span>
+                        <small>Stretching, Light Cardio</small>
+                    </div>
+                </div>
+
+                <div class="day-card rest-day">
+                    <div class="day-icon">😴</div>
+                    <div class="day-info">
+                        <h3>Minggu</h3>
+                        <span>Rest Day</span>
+                        <small>Complete Rest & Recovery</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="equipment-note">
+                <p>🏠 Equipment: Dumbbell Set + Mat</p>
+            </div>
+        </div>
+
+        <!-- Today's Workout Page -->
+        <div id="today-page" class="page">
+            <header class="page-header">
+                <h1 id="today-title">Latihan Hari Ini</h1>
+                <div class="streak-badge">
+                    <span>🔥</span>
+                    <span id="streak-count">0</span> hari streak
+                </div>
+            </header>
+
+            <div id="workout-container">
+                <div class="empty-state" id="empty-today">
+                    <div class="empty-icon">📅</div>
+                    <h3>Siap untuk berkeringat?</h3>
+                    <p>Pilih jadwal atau mulai latihan hari ini</p>
+                    <button class="btn-primary" onclick="startTodayWorkout()">💪 Mulai Sekarang</button>
+                </div>
+
+                <div id="active-workout" class="hidden">
+                    <div class="workout-meta">
+                        <span id="workout-focus">Focus Area</span>
+                        <span id="workout-duration">~45 menit</span>
+                    </div>
+
+                    <div class="workout-progress">
+                        <div class="progress-ring">
+                            <svg viewBox="0 0 100 100">
+                                <defs>
+                                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#ff6b35;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#f7931e;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <circle class="progress-bg" cx="50" cy="50" r="45"/>
+                                <circle class="progress-bar" id="progress-circle" cx="50" cy="50" r="45"/>
+                            </svg>
+                            <div class="progress-text">
+                                <span id="progress-percent">0%</span>
+                            </div>
+                        </div>
+                        <div class="progress-stats">
+                            <p><span id="completed-exercises">0</span> / <span id="total-exercises">0</span> exercise</p>
+                            <p id="sets-progress">0 / 0 set selesai</p>
+                        </div>
+                    </div>
+
+                    <div id="exercise-list" class="exercise-list"></div>
+
+                    <button class="btn-complete-all" onclick="finishWorkout()">
+                        ✅ SELESAIKAN WORKOUT
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Page -->
+        <div id="progress-page" class="page">
+            <header class="page-header">
+                <h1>Progress Beast</h1>
+            </header>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🏋️</div>
+                    <div class="stat-value" id="total-workouts">0</div>
+                    <div class="stat-label">Workout Done</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-value" id="total-time">0</div>
+                    <div class="stat-label">Menit Latihan</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🔥</div>
+                    <div class="stat-value" id="current-streak">0</div>
+                    <div class="stat-label">Streak Hari</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💯</div>
+                    <div class="stat-value" id="completion-rate">0%</div>
+                    <div class="stat-label">Consistency</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3>Aktivitas Mingguan</h3>
+                <div class="week-chart" id="week-chart"></div>
+            </div>
+
+            <div class="muscle-map">
+                <h3>Target Muscles</h3>
+                <div class="muscle-legend">
+                    <div class="muscle-item"><span class="dot leg"></span> Legs</div>
+                    <div class="muscle-item"><span class="dot back"></span> Back</div>
+                    <div class="muscle-item"><span class="dot chest"></span> Chest</div>
+                    <div class="muscle-item"><span class="dot shoulder"></span> Shoulders</div>
+                    <div class="muscle-item"><span class="dot arm"></span> Arms</div>
+                </div>
+            </div>
+
+            <div class="achievements">
+                <h3>Pencapaian 🏆</h3>
+                <div id="achievements-list"></div>
+            </div>
+        </div>
+
+        <!-- Profile Page -->
+        <div id="profile-page" class="page">
+            <header class="page-header">
+                <h1>Profil</h1>
+            </header>
+
+            <div class="profile-card">
+                <div class="avatar" id="user-avatar">🦍</div>
+                <h2 id="user-name">Dumbbell Warrior</h2>
+                <p>Level: <span id="user-level">Beginner</span></p>
+                <div class="level-progress">
+                    <div class="level-bar" id="level-bar"></div>
+                </div>
+            </div>
+
+            <div class="settings-list">
+                <div class="setting-item">
+                    <span>🔔 Notifikasi Harian</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="notif-toggle" onchange="toggleNotifications()">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <span>🔊 Sound Effects</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="sound-toggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <span>⏱️ Auto Rest Timer</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="auto-timer" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="tips-section">
+                <h3>💡 Tips Hari Ini</h3>
+                <div class="tip-card" id="daily-tip">
+                    Progressive overload: Naikkan weight 2.5kg setiap 2 minggu
+                </div>
+            </div>
+
+            <div class="motivation-section">
+                <h3>Quotes</h3>
+                <div class="quote-card" onclick="newQuote()">
+                    <p id="random-quote">"No pain, no gain"</p>
+                    <small>Tap untuk baru</small>
+                </div>
+            </div>
+
+            <div class="data-actions">
+                <button class="btn-secondary" onclick="exportData()">📥 Export Data</button>
+                <button class="btn-secondary" onclick="importData()">📤 Import Data</button>
+            </div>
+
+            <button class="btn-danger" onclick="resetProgress()">🗑️ Reset Progress</button>
+        </div>
+
+        <!-- Day Detail Modal -->
+        <div id="day-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div>
+                        <h2 id="modal-day-title">Senin</h2>
+                        <p id="modal-day-focus">Leg Day</p>
+                    </div>
+                    <button class="close-btn" onclick="closeModal()">×</button>
+                </div>
+                <div class="modal-stats">
+                    <span id="modal-exercise-count">0 exercises</span>
+                    <span id="modal-set-count">0 sets total</span>
+                </div>
+                <div id="modal-exercises" class="modal-exercises"></div>
+                <button class="btn-primary" onclick="startWorkoutFromModal()">
+                    🚀 MULAI WORKOUT
+                </button>
+            </div>
+        </div>
+
+        <!-- Timer Modal -->
+        <div id="timer-modal" class="modal timer-modal">
+            <div class="modal-content timer-content">
+                <h3>⏱️ REST TIMER</h3>
+                <h2 id="timer-exercise-name">Istirahat</h2>
+                <div class="timer-display" id="timer-display">60</div>
+                <div class="timer-presets">
+                    <button onclick="setTimer(30)">30s</button>
+                    <button onclick="setTimer(60)">60s</button>
+                    <button onclick="setTimer(90)">90s</button>
+                    <button onclick="setTimer(120)">2m</button>
+                </div>
+                <div class="timer-controls">
+                    <button onclick="adjustTimer(-10)">-10s</button>
+                    <button onclick="toggleTimer()" id="timer-toggle">⏸️</button>
+                    <button onclick="adjustTimer(10)">+10s</button>
+                </div>
+                <button class="btn-primary" onclick="closeTimer()">Lanjutkan 💪</button>
+            </div>
+        </div>
+
+        <!-- Celebration Overlay -->
+        <div id="celebration" class="celebration hidden">
+            <div class="celebration-content">
+                <div class="trophy">🏆</div>
+                <h2>BEAST MODE COMPLETE!</h2>
+                <div class="workout-summary" id="workout-summary"></div>
+                <p id="celebration-message">Kamu luar biasa!</p>
+                <button class="btn-primary" onclick="closeCelebration()">LANJUTKAN 🔥</button>
+            </div>
+            <canvas id="confetti-canvas"></canvas>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
